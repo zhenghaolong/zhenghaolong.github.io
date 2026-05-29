@@ -1,337 +1,435 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>郑豪龙 · Haolong Zheng</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Noto+Serif+SC:wght@300;400;600&family=DM+Mono&display=swap" rel="stylesheet"/>
+  <title>Haolong Zheng (郑豪龙)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --ink: #1a1a2e;
-      --paper: #f5f0e8;
-      --accent: #c0392b;
-      --muted: #7a7065;
-      --line: rgba(26,26,46,0.12);
+      --bg: #ffffff;
+      --sidebar-bg: #f8f8f8;
+      --border: #e0e0e0;
+      --text: #333333;
+      --muted: #666666;
+      --accent: #336699;
+      --accent-hover: #234d73;
+      --nav-bg: #494e52;
+      --nav-text: #ffffff;
     }
-
-    html { scroll-behavior: smooth; }
 
     body {
-      background: var(--paper);
-      color: var(--ink);
-      font-family: 'Noto Serif SC', serif;
-      min-height: 100vh;
-      overflow-x: hidden;
+      font-family: 'Source Sans 3', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      font-size: 16px;
+      line-height: 1.6;
     }
 
-    /* noise texture overlay */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 999;
-      opacity: 0.4;
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-hover); text-decoration: underline; }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--nav-bg);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    /* ── HEADER ── */
-    header {
-      padding: 80px 60px 60px;
-      border-bottom: 1px solid var(--line);
+    .nav-title {
+      color: var(--nav-text);
+      font-family: 'Lora', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--nav-text);
+      font-size: 0.82rem;
+      padding: 0 14px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      opacity: 0.85;
+      transition: opacity 0.15s, background 0.15s;
+      letter-spacing: 0.03em;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+      background: rgba(255,255,255,0.1);
+      text-decoration: none;
+    }
+
+    /* ── LAYOUT ── */
+    .page-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
       display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: end;
-      gap: 40px;
-      animation: fadeUp 0.8s ease both;
-    }
-
-    .name-block h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.8rem, 6vw, 5rem);
-      line-height: 1.05;
-      letter-spacing: -0.02em;
-      color: var(--ink);
-    }
-
-    .name-block h1 span {
-      color: var(--accent);
-    }
-
-    .name-en {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.85rem;
-      color: var(--muted);
-      letter-spacing: 0.15em;
-      margin-top: 10px;
-    }
-
-    .header-tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-align: right;
-      line-height: 2;
-    }
-
-    /* ── MAIN LAYOUT ── */
-    main {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      min-height: calc(100vh - 200px);
+      grid-template-columns: 240px 1fr;
+      gap: 0;
+      min-height: calc(100vh - 52px - 60px);
     }
 
     /* ── SIDEBAR ── */
-    aside {
-      border-right: 1px solid var(--line);
-      padding: 50px 40px;
-      animation: fadeUp 0.8s 0.15s ease both;
+    .sidebar {
+      padding: 32px 20px 32px 0;
+      border-right: 1px solid var(--border);
     }
 
-    .section-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 18px;
+    .avatar-wrap {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 16px;
+      background: #dde4ec;
       display: flex;
       align-items: center;
-      gap: 8px;
-    }
-    .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--accent);
-      opacity: 0.3;
+      justify-content: center;
+      border: 3px solid var(--border);
     }
 
-    .info-item {
-      margin-bottom: 28px;
+    .avatar-placeholder {
+      font-size: 3rem;
+      color: #aab4c0;
+      user-select: none;
     }
-    .info-item .label {
-      font-size: 0.72rem;
-      color: var(--muted);
-      margin-bottom: 4px;
-      font-weight: 300;
-    }
-    .info-item .value {
-      font-size: 0.92rem;
+
+    .sidebar-name {
+      font-family: 'Lora', serif;
+      font-size: 1.15rem;
       font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    .sidebar-title {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 18px;
       line-height: 1.5;
     }
 
-    .tag-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 16px;
+    .sidebar-links {
+      list-style: none;
+      margin-bottom: 20px;
     }
-    .tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      padding: 4px 10px;
-      border: 1px solid var(--line);
-      border-radius: 2px;
+
+    .sidebar-links li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
       color: var(--muted);
-      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .sidebar-links li svg {
+      flex-shrink: 0;
+      opacity: 0.6;
+    }
+
+    .sidebar-links li a {
+      font-size: 0.82rem;
+    }
+
+    .sidebar-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 16px 0;
     }
 
     /* ── CONTENT ── */
     .content {
-      padding: 50px 60px;
-      animation: fadeUp 0.8s 0.25s ease both;
+      padding: 36px 40px;
     }
 
-    /* ── EDUCATION CARDS ── */
-    .edu-card {
-      border: 1px solid var(--line);
-      padding: 32px;
-      margin-bottom: 24px;
-      position: relative;
-      transition: border-color 0.2s, transform 0.2s;
-      background: rgba(255,255,255,0.4);
-    }
-    .edu-card:hover {
-      border-color: var(--accent);
-      transform: translateX(4px);
+    .section {
+      margin-bottom: 40px;
     }
 
-    .edu-card .degree-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 3.5rem;
-      color: var(--line);
-      position: absolute;
-      top: 20px;
-      right: 28px;
-      line-height: 1;
-      user-select: none;
+    h1.page-title {
+      font-family: 'Lora', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
     }
 
-    .edu-card .degree-type {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      color: var(--accent);
-      margin-bottom: 10px;
-    }
-
-    .edu-card h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .edu-card .major {
-      font-size: 0.9rem;
-      color: var(--muted);
+    h2.section-title {
+      font-family: 'Lora', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
       margin-bottom: 14px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .edu-card .detail {
-      font-size: 0.85rem;
+    .about-text {
+      font-size: 0.95rem;
       line-height: 1.8;
-      color: var(--ink);
-      opacity: 0.75;
-      border-top: 1px solid var(--line);
-      padding-top: 14px;
-      margin-top: 4px;
+      color: var(--text);
+      max-width: 680px;
     }
 
-    /* ── ABOUT SECTION ── */
-    .about-block {
-      margin-top: 48px;
-      padding-top: 40px;
-      border-top: 1px solid var(--line);
+    .about-text p { margin-bottom: 14px; }
+    .about-text p:last-child { margin-bottom: 0; }
+
+    /* ── EDUCATION ── */
+    .edu-list { list-style: none; }
+
+    .edu-item {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+      font-size: 0.93rem;
     }
 
-    .about-block p {
-      font-size: 1rem;
+    .edu-year {
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      padding-top: 2px;
+    }
+
+    .edu-degree {
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .edu-school {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .edu-field {
+      font-size: 0.88rem;
+      color: var(--text);
+      margin-top: 2px;
+    }
+
+    /* ── INTERESTS ── */
+    .interest-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      background: #eef2f7;
+      border: 1px solid #d0dae8;
+      color: var(--accent);
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+
+    /* ── NEWS ── */
+    .news-list { list-style: none; }
+    .news-item {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      border-bottom: 1px solid #f0f0f0;
+      padding-bottom: 10px;
+    }
+    .news-item:last-child { border-bottom: none; }
+    .news-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      color: var(--muted);
+      padding-top: 2px;
+    }
+
+    /* ── CONTACT ── */
+    .contact-info {
+      font-size: 0.9rem;
       line-height: 2;
-      color: var(--ink);
-      opacity: 0.8;
-      max-width: 560px;
+      color: var(--text);
     }
 
     /* ── FOOTER ── */
     footer {
-      border-top: 1px solid var(--line);
-      padding: 30px 60px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--muted);
+      background: var(--nav-bg);
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      font-size: 0.78rem;
+      padding: 18px;
     }
 
-    .footer-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      display: inline-block;
-      margin-right: 8px;
-    }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    footer a { color: rgba(255,255,255,0.8); }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      header { padding: 40px 24px 32px; grid-template-columns: 1fr; }
-      main { grid-template-columns: 1fr; }
-      aside { border-right: none; border-bottom: 1px solid var(--line); padding: 32px 24px; }
-      .content { padding: 32px 24px; }
-      footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
+    @media (max-width: 720px) {
+      .page-wrap { grid-template-columns: 1fr; }
+      .sidebar { border-right: none; border-bottom: 1px solid var(--border); padding: 24px 16px; flex-direction: row; display: flex; gap: 20px; align-items: flex-start; }
+      .avatar-wrap { width: 90px; height: 90px; flex-shrink: 0; }
+      .content { padding: 24px 16px; }
+      .nav-title { display: none; }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="name-block">
-    <h1>郑<span>豪</span>龙</h1>
-    <div class="name-en">HAOLONG ZHENG</div>
-  </div>
-  <div class="header-tag">
-    研究生在读<br/>
-    多模态情感分析<br/>
-    山东师范大学
-  </div>
-</header>
+<!-- NAV -->
+<nav>
+  <span class="nav-title">Haolong Zheng (郑豪龙)</span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
 
-<main>
-  <aside>
-    <div class="section-label">基本信息</div>
+<div class="page-wrap">
 
-    <div class="info-item">
-      <div class="label">姓名</div>
-      <div class="value">郑豪龙</div>
-    </div>
-    <div class="info-item">
-      <div class="label">英文名</div>
-      <div class="value">Haolong Zheng</div>
-    </div>
-    <div class="info-item">
-      <div class="label">研究方向</div>
-      <div class="value">多模态情感分析</div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="avatar-wrap">
+      <span class="avatar-placeholder">👤</span>
     </div>
 
-    <div class="section-label" style="margin-top:36px;">技术标签</div>
-    <div class="tag-list">
-      <span class="tag">多模态</span>
-      <span class="tag">情感分析</span>
-      <span class="tag">深度学习</span>
-      <span class="tag">NLP</span>
-      <span class="tag">Python</span>
+    <div class="sidebar-name">Haolong Zheng<br/>郑豪龙</div>
+    <div class="sidebar-title">
+      M.S. Student<br/>
+      Shandong Normal University
     </div>
+
+    <hr class="sidebar-divider"/>
+
+    <ul class="sidebar-links">
+      <li>
+        <!-- location icon -->
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Jinan, China
+      </li>
+      <li>
+        <!-- mail icon -->
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <a href="mailto:your@email.com">your@email.com</a>
+      </li>
+      <li>
+        <!-- github icon -->
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.26 2.88.13 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        <a href="https://haolongzheng.github.io" target="_blank">haolongzheng.github.io</a>
+      </li>
+    </ul>
   </aside>
 
-  <div class="content">
-    <div class="section-label">教育经历</div>
+  <!-- MAIN CONTENT -->
+  <main class="content">
 
-    <div class="edu-card">
-      <div class="degree-num">01</div>
-      <div class="degree-type">BACHELOR · 本科</div>
-      <h2>长春工业大学</h2>
-      <div class="major">计算数学</div>
-      <div class="detail">
-        系统学习数学分析、数值计算、线性代数与概率统计，<br/>
-        为后续人工智能研究奠定扎实的数学基础。
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <h1 class="page-title">About Me</h1>
+      <div class="about-text">
+        <p>
+          I am a Master's student at <a href="https://www.sdnu.edu.cn/" target="_blank">Shandong Normal University</a>,
+          working on multimodal sentiment analysis. My research focuses on understanding human emotions
+          through the fusion of multiple modalities, including text, image, and audio.
+        </p>
+        <p>
+          Prior to my graduate studies, I received my Bachelor's degree in Computational Mathematics
+          from <a href="https://www.ccut.edu.cn/" target="_blank">Changchun University of Technology</a>,
+          where I developed a solid foundation in mathematical modeling and numerical computation.
+        </p>
+        <p>
+          I am broadly interested in natural language processing, affective computing, and
+          multimodal learning, with the goal of building AI systems that can better understand
+          human communication.
+        </p>
       </div>
-    </div>
+    </section>
 
-    <div class="edu-card">
-      <div class="degree-num">02</div>
-      <div class="degree-type">MASTER · 硕士</div>
-      <h2>山东师范大学</h2>
-      <div class="major">多模态情感分析方向</div>
-      <div class="detail">
-        研究方向聚焦于多模态情感分析，探索文本、图像、音频等<br/>
-        多种模态信息的融合与情感理解，致力于推动情感计算领域发展。
+    <!-- RESEARCH INTERESTS -->
+    <section class="section" id="research">
+      <h2 class="section-title">Research Interests</h2>
+      <div class="interest-tags">
+        <span class="tag">Multimodal Sentiment Analysis</span>
+        <span class="tag">Natural Language Processing</span>
+        <span class="tag">Affective Computing</span>
+        <span class="tag">Multimodal Learning</span>
+        <span class="tag">Deep Learning</span>
       </div>
-    </div>
+    </section>
 
-    <div class="about-block">
-      <div class="section-label">关于我</div>
-      <p>
-        从计算数学出发，走向人工智能与自然语言处理的交叉前沿。
-        热衷于用数学思维理解复杂模型，探索机器如何理解人类情感。
-      </p>
-    </div>
-  </div>
-</main>
+    <!-- EDUCATION -->
+    <section class="section" id="education">
+      <h2 class="section-title">Education</h2>
+      <ul class="edu-list">
+        <li class="edu-item">
+          <div class="edu-year">2023 – Present</div>
+          <div>
+            <div class="edu-degree">M.S. in Computer Science</div>
+            <div class="edu-school">Shandong Normal University, Jinan, China</div>
+            <div class="edu-field">Research Direction: Multimodal Sentiment Analysis</div>
+          </div>
+        </li>
+        <li class="edu-item">
+          <div class="edu-year">2019 – 2023</div>
+          <div>
+            <div class="edu-degree">B.S. in Computational Mathematics</div>
+            <div class="edu-school">Changchun University of Technology, Changchun, China</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- NEWS -->
+    <section class="section" id="news">
+      <h2 class="section-title">News</h2>
+      <ul class="news-list">
+        <li class="news-item">
+          <div class="news-date">2025.09</div>
+          <div>Started M.S. program at Shandong Normal University.</div>
+        </li>
+        <li class="news-item">
+          <div class="news-date">2023.06</div>
+          <div>Graduated from Changchun University of Technology with a B.S. in Computational Mathematics.</div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section" id="contact">
+      <h2 class="section-title">Contact</h2>
+      <div class="contact-info">
+        <strong>Email:</strong> <a href="mailto:your@email.com">your@email.com</a><br/>
+        <strong>Address:</strong> School of Information Science and Engineering,<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Shandong Normal University, Jinan, Shandong, China
+      </div>
+    </section>
+
+  </main>
+</div>
 
 <footer>
-  <div><span class="footer-dot"></span>郑豪龙 · Haolong Zheng</div>
-  <div>haolongzheng.github.io</div>
+  © 2025 Haolong Zheng &nbsp;·&nbsp;
+  Powered by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>
 </footer>
 
 </body>
